@@ -11,6 +11,14 @@
 |
 */
 
+Route::group(['prefix' => 'api'], function() {
+
+    Route::group(['prefix' => 'info'], function() {
+        Route::get('server-time', 'InfoController@serverTime');
+    });
+
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
