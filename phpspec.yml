@@ -1,5 +1,5 @@
 suites:
     main:
-        namespace: App
-        psr4_prefix: App
+        namespace: Tidy
+        psr4_prefix: Tidy
         src_path: app

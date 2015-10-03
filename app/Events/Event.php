@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace Tidy\Events;
 
 abstract class Event
 {
