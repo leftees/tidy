@@ -6,7 +6,7 @@ php:
   - hhvm
   - nightly
 
-script: phpunit --coverage-clover build/logs/clover.xml
+script: vendor/bin/phpspec run
 
 matrix:
   allow_failures:
@@ -20,5 +20,5 @@ cache:
     - $HOME/.composer/cache
 
 after_script:
-  - vendor/bin/test-reporter --stdout > build/logs/coverage.json
+  - vendor/bin/test-reporter --stdout > coverage.json
   - "curl -X POST -d @build/logs/coverage.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.0.2)' https://codeclimate.com/test_reports"

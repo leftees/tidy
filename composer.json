@@ -1,6 +1,6 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
+    "name": "temporapslide/tidy",
+    "description": "Tidy Application",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
@@ -12,7 +12,10 @@
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~4.0",
-        "phpspec/phpspec": "~2.1"
+        "phpspec/phpspec": "^2.3",
+        "benconstable/phpspec-laravel": "~2.0",
+        "henrikbjorn/phpspec-code-coverage": "~1.0",
+        "codeclimate/php-test-reporter": "dev-master"
     },
     "autoload": {
         "classmap": [

@@ -3,3 +3,25 @@ suites:
         namespace: Tidy
         psr4_prefix: Tidy
         src_path: app
+
+extensions:
+    - PhpSpec\Laravel\Extension\LaravelExtension
+    - PhpSpec\Extension\CodeCoverageExtension
+
+laravel_extension:
+    testing_environment: 'testing'
+
+formatter.name: pretty
+
+code_coverage:
+  format:
+    - clover
+  output:
+    clover: build/logs/coverage.xml
+  blacklist:
+    - tests
+    - spec
+    - vendor
+    - storage
+  whitelist:
+    - app    
