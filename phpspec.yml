@@ -17,7 +17,7 @@ code_coverage:
   format:
     - clover
   output:
-    clover: build/logs/coverage.xml
+    clover: build/logs/clover.xml
   blacklist:
     - tests
     - spec
