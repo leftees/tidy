@@ -1,7 +1,6 @@
 ## Tidy Backend
 
 [![Build Status](https://travis-ci.org/temporalslide/tidy.svg)](https://travis-ci.org/temporalslide/tidy)
-[![License](https://poser.pugx.org/temporalslide/tidy/license.svg)](https://packagist.org/packages/temporalslide/tidy)
 
 A simple Item Management System used to record ownership of possessions (such as books, DVDs and similiar).
 
