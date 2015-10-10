@@ -15,7 +15,8 @@
         "phpspec/phpspec": "^2.3",
         "benconstable/phpspec-laravel": "~2.0",
         "henrikbjorn/phpspec-code-coverage": "~1.0",
-        "codeclimate/php-test-reporter": "dev-master"
+        "codeclimate/php-test-reporter": "dev-master",
+        "predis/predis": "^1.0"
     },
     "autoload": {
         "classmap": [
