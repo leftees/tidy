@@ -4,6 +4,7 @@ namespace Tidy\Exceptions;
 
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Raven_Client;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -30,6 +31,14 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
+        $dsn = env('SENTRY_DSN');
+
+        if(!empty($dsn)) {
+            $client = new Raven_Client($dsn);
+            $client->captureException($dsn);
+        }
+        
+        
         return parent::report($e);
     }
 
