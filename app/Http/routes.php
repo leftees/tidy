@@ -11,10 +11,21 @@
 |
 */
 
-Route::group(['prefix' => 'api'], function() {
+Route::group(['prefix' => 'api'], function () {
 
-    Route::group(['prefix' => 'info'], function() {
+    Route::group(['prefix' => 'info'], function () {
         Route::get('server-time', 'InfoController@serverTime');
+    });
+    
+    
+    // Authentication
+    Route::post('authenticate', 'AuthenticationController@authenticate');
+    Route::get('authenticate/invalidate', 'AuthenticationController@invalidate');
+    
+    
+    // Routes that require a token
+    Route::group(['middleware' => 'jwt.auth'], function () {
+
     });
 
 });

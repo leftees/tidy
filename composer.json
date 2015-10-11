@@ -6,7 +6,9 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.1.*"
+        "laravel/framework": "5.1.*",
+        "tymon/jwt-auth": "0.5.*",
+        "raven/raven": "0.13.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -15,7 +17,8 @@
         "codeclimate/php-test-reporter": "dev-master",
         "predis/predis": "^1.0",
         "codeception/codeception": "^2.1",
-        "flow/jsonpath": "^0.3.0"
+        "flow/jsonpath": "^0.3.0",
+        "barryvdh/laravel-ide-helper": "^2.1"
     },
     "autoload": {
         "classmap": [
@@ -39,6 +42,8 @@
             "php artisan clear-compiled"
         ],
         "post-update-cmd": [
+            "php artisan clear-compiled",
+            "php artisan ide-helper:generate",
             "php artisan optimize"
         ],
         "post-root-package-install": [

@@ -41,6 +41,24 @@ $app->singleton(
     Tidy\Exceptions\Handler::class
 );
 
+
+
+// Initialise Support for Raven
+$app->configureMonologUsing(function($monolog) {
+    $dsn = env('SENTRY_DSN');
+    
+    if(!empty($dsn)) {
+        $client = new Raven_Client($dsn);
+
+        $handler = new Monolog\Handler\RavenHandler($client);
+        $handler->setFormatter(new Monolog\Formatter\LineFormatter("%message% %context% %extra%\n"));
+
+        $monolog->pushHandler($handler);
+    }
+});
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application
