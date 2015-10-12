@@ -15,7 +15,7 @@ extensions:
 modules:
     config:
         Db:
-            dsn: ''
+            dsn: 'sqlite::memory:'
             user: ''
             password: ''
             dump: tests/_data/dump.sql

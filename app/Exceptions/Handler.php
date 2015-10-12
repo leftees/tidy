@@ -32,8 +32,8 @@ class Handler extends ExceptionHandler
     public function report(Exception $e)
     {
         $dsn = env('SENTRY_DSN');
-
-        if(!empty($dsn)) {
+        
+        if(!empty($dsn) && env('APP_ENV') !== 'testing') {
             $client = new Raven_Client($dsn);
             $client->captureException($dsn);
         }
@@ -54,18 +54,21 @@ class Handler extends ExceptionHandler
         if ($e instanceof ModelNotFoundException) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
-        
+
+        $statusCode = null;
         if($e instanceof NotFoundHttpException) {
-            $code = 404;
+            $statusCode = 404;
         }
         else {
-            $code = $e->getCode();
+            if(method_exists($e, 'getStatusCode')){
+                $statusCode = $e->getStatusCode();
+            }
         }
         
-        if(!$code) {
-            $code = 500;
+        if(!$statusCode) {
+            $statusCode = 500;
         }
         
-        return response()->json(['error' => $e->getMessage(), 'type' => get_class($e)], $code);
+        return response()->json(['error' => $e->getMessage(), 'code' => $e->getCode()], $statusCode);
     }
 }
