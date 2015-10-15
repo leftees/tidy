@@ -10,10 +10,9 @@ before_script:
   - cp .env.testing .env
   - php artisan migrate --database=sqlite_testing --force
   - ./vendor/bin/codecept build
-  - php artisan serve
 
 script:
-  - ./vendor/bin/codecept run --coverage-xml
+  - ./vendor/bin/codecept run -s acceptance --coverage-xml
 
 matrix:
   allow_failures:
