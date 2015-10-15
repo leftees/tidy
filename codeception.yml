@@ -13,6 +13,8 @@ extensions:
     enabled:
         - Codeception\Extension\RunFailed
 modules:
+    enabled:
+        - Laravel5
     config:
         Db:
             dsn: 'sqlite::memory:'
