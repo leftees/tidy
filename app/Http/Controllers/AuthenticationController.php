@@ -4,6 +4,7 @@ namespace Tidy\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Tidy\Http\Requests;
+use Tidy\User;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use JWTAuth;
 
@@ -50,6 +51,16 @@ class AuthenticationController extends Controller
         } catch (JWTException $e) {
         }
         return response()->json(['success' => true]);
+    }
+
+    public function getActiveUser()
+    {
+        $user = $this->getUser();
+        if(!$user instanceof User) {
+            return $user;
+        }
+
+        return response()->json(compact('user'));
     }
 
 }

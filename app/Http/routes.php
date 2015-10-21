@@ -21,11 +21,11 @@ Route::group(['prefix' => 'api'], function () {
     // Authentication
     Route::post('authenticate', 'AuthenticationController@authenticate');
     Route::get('authenticate/invalidate', 'AuthenticationController@invalidate');
-    
+    Route::get('authenticate/user', 'AuthenticationController@getActiveUser');
     
     // Routes that require a token
     Route::group(['middleware' => 'jwt.auth'], function () {
-
+        
     });
 
 });

@@ -6,10 +6,20 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use JWTAuth;
+use Tidy\User;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 abstract class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    /**
+     * @param User
+     */
+    private $user;
 
     /**
      * Respond with a error
@@ -31,6 +41,54 @@ abstract class Controller extends BaseController
         dd($response);
         
         return response()->json($response, $code);
+    }
+
+    /**
+     * @param bool $jsonOnError
+     * @return \Illuminate\Http\JsonResponse|mixed|null|User
+     */
+    public function getUser($jsonOnError = false)
+    {
+        if($this->user instanceof User) {
+            return $this->user;
+        }
+
+        $error = false;
+        $statusCode = 404;
+        $message = '';
+        $user = null;
+        
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+
+            if(!$user) {
+                $error = true;
+                $statusCode = 401;
+                $message = 'token_absent';
+            }
+        }
+        catch (TokenExpiredException $ex) {
+            $error = true;
+            $statusCode = 401;
+            $message = 'token_expired';
+        }
+        catch (TokenInvalidException $ex) {
+            $error = true;
+            $statusCode = 401;
+            $message = 'token_invalid';
+        }
+        catch (JWTException $ex) {
+            $error = true;
+            $statusCode = 401;
+            $message = 'token_absent';
+        }
+        
+        if($error) {
+            return $jsonOnError ? response()->json(['error' => $message], $statusCode) : null;
+        }
+        
+        $this->user = $user;
+        return $this->user;
     }
     
 }

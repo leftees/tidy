@@ -35,7 +35,7 @@ class Handler extends ExceptionHandler
         
         if(!empty($dsn) && env('APP_ENV') !== 'testing') {
             $client = new Raven_Client($dsn);
-            $client->captureException($dsn);
+            $client->captureException($e);
         }
         
         
