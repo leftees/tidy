@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'api'], function () {
+Route::group(['prefix' => 'api', 'middleware' => 'cors'], function () {
 
     Route::group(['prefix' => 'info'], function () {
         Route::get('server-time', 'InfoController@serverTime');
@@ -20,6 +20,7 @@ Route::group(['prefix' => 'api'], function () {
     
     // Authentication
     Route::post('authenticate', 'AuthenticationController@authenticate');
+    Route::get('authenticate', 'AuthenticationController@authenticate');
     Route::get('authenticate/invalidate', 'AuthenticationController@invalidate');
     Route::get('authenticate/user', 'AuthenticationController@getActiveUser');
     

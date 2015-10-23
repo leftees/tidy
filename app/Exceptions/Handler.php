@@ -39,7 +39,7 @@ class Handler extends ExceptionHandler
         }
         
         
-        return parent::report($e);
+        parent::report($e);
     }
 
     /**
@@ -69,6 +69,12 @@ class Handler extends ExceptionHandler
             $statusCode = 500;
         }
         
-        return response()->json(['error' => $e->getMessage(), 'code' => $e->getCode()], $statusCode);
+        $response = response()->json(['error' => $e->getMessage(), 'code' => $e->getCode()], $statusCode);
+
+        if ($request->is('api/*')) {
+            app('Asm89\Stack\CorsService')->addActualRequestHeaders($response, $request);
+        }
+        
+        return $response;
     }
 }

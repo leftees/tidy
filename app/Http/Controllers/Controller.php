@@ -38,8 +38,6 @@ abstract class Controller extends BaseController
             $response = array_merge($response, $extra);
         }
         
-        dd($response);
-        
         return response()->json($response, $code);
     }
 
