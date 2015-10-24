@@ -20,4 +20,12 @@ class Account extends Model
      */
     protected $fillable = ['name', 'address', 'description'];
 
+    /**
+     * The users that belong to the account
+     */
+    public function users()
+    {
+        return $this->belongsToMany('Tidy\User');
+    }
+
 }

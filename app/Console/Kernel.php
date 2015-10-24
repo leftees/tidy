@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \Tidy\Console\Commands\Inspire::class,
+        \Tidy\Console\Commands\ListUsers::class,
     ];
 
     /**

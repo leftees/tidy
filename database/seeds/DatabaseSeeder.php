@@ -14,7 +14,8 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call(UserTableSeeder::class);
+        \Tidy\User::create(['name' => 'Test User', 'email' => 'test1@example.com', 'password' => bcrypt('qwerty')]);
+        $this->call(UserTableSeeder::class);
 
         Model::reguard();
     }
