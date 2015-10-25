@@ -27,6 +27,6 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
-//        'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
+        'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
     ];
 }
