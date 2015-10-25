@@ -53,14 +53,5 @@ class AuthenticationController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function getActiveUser()
-    {
-        $user = $this->getUser();
-        if(!$user instanceof User) {
-            return $user;
-        }
-
-        return response()->json(compact('user'));
-    }
 
 }

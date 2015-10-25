@@ -45,7 +45,7 @@ abstract class Controller extends BaseController
      * @param bool $jsonOnError
      * @return \Illuminate\Http\JsonResponse|mixed|null|User
      */
-    public function getUser($jsonOnError = false)
+    protected function getUser($jsonOnError = false)
     {
         if($this->user instanceof User) {
             return $this->user;

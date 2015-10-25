@@ -22,10 +22,13 @@ Route::group(['prefix' => 'api', 'middleware' => 'cors'], function () {
     Route::post('authenticate', 'AuthenticationController@authenticate');
     Route::get('authenticate', 'AuthenticationController@authenticate');
     Route::get('authenticate/invalidate', 'AuthenticationController@invalidate');
-    Route::get('authenticate/user', 'AuthenticationController@getActiveUser');
+    Route::get('user/active', 'UserController@getActiveUser');
     
     // Routes that require a token
     Route::group(['middleware' => 'jwt.auth'], function () {
+        
+        // Menu
+        Route::get('menu', 'MenuController@menuItems');
         
     });
 
