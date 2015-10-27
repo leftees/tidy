@@ -16,12 +16,17 @@ modules:
     enabled:
         - Laravel5
     config:
-        Db:
-            dsn: 'sqlite::memory:'
-            user: ''
-            password: ''
-            dump: tests/_data/dump.sql
+        Laravel5:
+            cleanup: true
+            environment_file: '.env.testing'
+            disable_middleware: true
 coverage:
     enabled: true
     include:
         - app/*
+    exclude:
+        - app/Http/Controllers/*
+        - app/Http/Kernel.php
+        - app/Console/Kernel.php
+        - app/Http/routes.php
+        - app/Providers/*
