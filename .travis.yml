@@ -22,5 +22,5 @@ cache:
     - $HOME/.composer/cache
 
 after_script:
-  - vendor/bin/test-reporter --coverage-report=tests/_output/coverage.xml --stdout > build/logs/coverage.json
-  - "curl -X POST -d @build/logs/coverage.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.0.2)' https://codeclimate.com/test_reports"
+  - vendor/bin/test-reporter --coverage-report=tests/_output/coverage.xml --stdout > tests/_output/climate-coverage.json
+  - "curl -X POST -d @tests/_output/climate-coverage.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.0.2)' https://codeclimate.com/test_reports"
