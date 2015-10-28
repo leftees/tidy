@@ -22,6 +22,10 @@ class CreateBluraysTable extends Migration
             
             $table->timestamps();
             $table->softDeletes();
+            
+            $table->foreign('series_id')->references('id')->on('series');
+            $table->foreign('rating_id')->references('id')->on('ratings');
+            $table->foreign('account_id')->references('id')->on('accounts');
         });
     }
 
