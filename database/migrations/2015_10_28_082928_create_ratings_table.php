@@ -15,7 +15,7 @@ class CreateRatingsTable extends Migration
         Schema::create('ratings', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->boolean('for_dvd');
             $table->boolean('for_bluray');
             $table->timestamps();
