@@ -14,8 +14,12 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        \Tidy\User::create(['name' => 'Test User', 'email' => 'test1@example.com', 'password' => bcrypt('qwerty')]);
-        $this->call(UserTableSeeder::class);
+        if(env('APP_ENV') !== 'production') {
+            $this->call(UserTableSeeder::class);
+        }
+        
+        // Prod level
+        $this->call(RatingsSeeder::class);
 
         Model::reguard();
     }
