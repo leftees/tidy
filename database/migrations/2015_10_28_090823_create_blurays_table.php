@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSeriesTable extends Migration
+class CreateBluraysTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,18 +12,16 @@ class CreateSeriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('series', function(Blueprint $table) {
+        Schema::create('blurays', function(Blueprint $table) {
             $table->increments('id');
             $table->string('title');
             $table->text('description')->nullable();
-            $table->boolean('for_dvd')->default(false);
-            $table->boolean('for_bluray')->default(false);
-            $table->boolean('for_book')->default(false);
+            $table->integer('series_id')->unsigned()->nullable();
+            $table->integer('rating_id')->unsigned()->nullable();
             $table->integer('account_id')->unsigned();
+            
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('account_id')->references('id')->on('accounts');
         });
     }
 
@@ -34,13 +32,14 @@ class CreateSeriesTable extends Migration
      */
     public function down()
     {
-        if(Schema::hasTable('series')) {
-            Schema::table('series', function(Blueprint $table) {
+        if(Schema::hasTable('blurays')) {
+            Schema::table('blurays', function(Blueprint $table) {
+                $table->dropForeign('series_series_id_foreign');
+                $table->dropForeign('ratings_rating_id_foreign');
                 $table->dropForeign('accounts_account_id_foreign');
             });
         }
-            
         
-        Schema::dropIfExists('series');
+        Schema::dropIfExists('bluerays');
     }
 }
