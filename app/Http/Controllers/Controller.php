@@ -16,6 +16,8 @@ abstract class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    const PER_PAGE = 20;
+
     /**
      * @param User
      */
@@ -88,5 +90,19 @@ abstract class Controller extends BaseController
         $this->user = $user;
         return $this->user;
     }
-    
+
+    /**
+     * Returns the active accountIds for this user
+     * @return array
+     */
+    public function getAccountIds()
+    {
+        $user = $this->getUser(false);
+
+        if(!$user) {
+            return [];
+        }
+
+        return $user->accounts()->pluck(['account_id'])->all();
+    }
 }

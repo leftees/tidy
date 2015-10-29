@@ -24,9 +24,12 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
-        //
-
         parent::boot($router);
+
+        $router->model('account', 'Tidy\Account');
+        $router->model('bluray', 'Tidy\Bluray');
+        $router->model('series', 'Tidy\Series');
+        $router->model('rating', 'Tidy\Rating');
     }
 
     /**

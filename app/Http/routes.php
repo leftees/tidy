@@ -28,6 +28,9 @@ Route::group(['prefix' => 'api', 'middleware' => 'cors'], function () {
     Route::group(['middleware' => ['jwt.auth', 'jwt.refresh']], function () {
         Route::get('menu', 'MenuController@menuItems');
         Route::get('user/active', 'UserController@getActiveUser');
+
+        // Items
+        Route::resource('bluray', 'BlurayController', ['except' => ['create', 'edit']]);
     });
 
 });
