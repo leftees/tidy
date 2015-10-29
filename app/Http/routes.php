@@ -34,7 +34,7 @@ Route::group(['prefix' => 'api', /*'middleware' => 'cors'*/], function () {
     });
 
 });
-
-Route::get('/', function () {
-    return view('welcome');
-});
+//
+//Route::get('/', function () {
+//    return view('welcome');
+//});

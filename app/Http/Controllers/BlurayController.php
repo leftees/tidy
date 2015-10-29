@@ -9,6 +9,16 @@ use Tidy\Http\Controllers\Controller;
 
 class BlurayController extends Controller
 {
+
+    /**
+     * @var Bluray
+     */
+    protected $bluray;
+    
+    public function __construct(Bluray $bluray) {
+        $this->bluray = $bluray;
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +46,9 @@ class BlurayController extends Controller
      */
     public function store(Requests\BlurayRequest $request)
     {
-//        $request->
+        $bluray = $this->bluray->create($request->only(['title', 'description', 'account_id']));
+        
+        return response()->json(compact('bluray'));
     }
 
     /**

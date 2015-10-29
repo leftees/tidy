@@ -20,10 +20,7 @@ class BlurayRequest extends Request
             return true; // Creates will pass
         }
 
-        $user = $this->user();
-        $accountIds = $user->getAccountIds();
-
-        return Bluray::where('id', $blurayId)->whereIn('account_id', $accountIds);
+        return Bluray::where('id', $blurayId)->whereIn('account_id', $this->getUserAccountIds());
     }
 
     /**
@@ -36,6 +33,7 @@ class BlurayRequest extends Request
         return [
             'title'       => 'required|max:500',
             'description' => 'max:4000',
+            'account_id'  => 'required|integer' // @TODO make sure the account id is limited to the accounts the user belongs to
         ];
     }
 }
