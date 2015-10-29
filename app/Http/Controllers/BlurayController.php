@@ -2,10 +2,12 @@
 
 namespace Tidy\Http\Controllers;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Tidy\Bluray;
 use Tidy\Http\Requests;
-use Tidy\Http\Controllers\Controller;
+use Tidy\Http\Requests\BlurayRequest;
 
 class BlurayController extends Controller
 {
@@ -14,16 +16,18 @@ class BlurayController extends Controller
      * @var Bluray
      */
     protected $bluray;
-    
-    public function __construct(Bluray $bluray) {
+
+    public function __construct(Bluray $bluray)
+    {
         $this->bluray = $bluray;
     }
-    
+
     /**
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -41,58 +45,68 @@ class BlurayController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Requests\BlurayRequest $request
-     * @return \Illuminate\Http\Response
+     * @param BlurayRequest $request
+     *
+     * @return Response
      */
-    public function store(Requests\BlurayRequest $request)
+    public function store(BlurayRequest $request)
     {
         $bluray = $this->bluray->create($request->only(['title', 'description', 'account_id']));
-        
+
         return response()->json(compact('bluray'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * @param Bluray $bluray
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function edit($id)
+    public function show(Bluray $bluray)
     {
-        //
+        if (!in_array($bluray->account->id, $this->getAccountIds())) {
+            throw new ModelNotFoundException;
+        }
+
+        return response()->json(compact('bluray'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Requests\BlurayRequest $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param BlurayRequest $request
+     * @param Bluray $bluray
+     *
+     * @return Response
      */
-    public function update(Requests\BlurayRequest $request, $id)
+    public function update(BlurayRequest $request, Bluray $bluray)
     {
-        //
+        if (!in_array($bluray->account->id, $this->getAccountIds())) {
+            throw new ModelNotFoundException;
+        }
+
+        $bluray->save();
+
+        return response()->json(compact('bluray'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Bluray $bluray
+     *
+     * @return Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Bluray $bluray)
     {
-        //
+        if (!in_array($bluray->account->id, $this->getAccountIds())) {
+            throw new ModelNotFoundException;
+        }
+
+        $bluray->delete();
+
+        return response()->json(['message' => 'deleted']);
     }
 }

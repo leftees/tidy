@@ -103,6 +103,6 @@ abstract class Controller extends BaseController
             return [];
         }
 
-        return $user->accounts()->pluck(['account_id'])->all();
+        return $user->getAccountIds();
     }
 }
