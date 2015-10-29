@@ -8,7 +8,7 @@ class Series extends Model
 {
     protected $table = 'series';
 
-    protected $fillable = ['title', 'description', 'for_dvd', 'for_bluray', 'for_book'];
+    protected $fillable = ['title', 'description', 'for_dvd', 'for_bluray', 'for_book', 'account_id'];
 
     public function scopeForDvd($query)
     {
@@ -23,5 +23,21 @@ class Series extends Model
     public function scopeForBook($query)
     {
         return $query->where('for_book', true);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function blurays()
+    {
+        return $this->hasMany('Tidy\Bluray');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function account()
+    {
+        return $this->belongsTo('Tidy\Account');
     }
 }
