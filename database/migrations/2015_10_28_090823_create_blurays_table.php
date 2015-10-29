@@ -36,14 +36,12 @@ class CreateBluraysTable extends Migration
      */
     public function down()
     {
-        if(Schema::hasTable('blurays')) {
-            Schema::table('blurays', function(Blueprint $table) {
-                $table->dropForeign('series_series_id_foreign');
-                $table->dropForeign('ratings_rating_id_foreign');
-                $table->dropForeign('accounts_account_id_foreign');
-            });
-        }
+        Schema::table('blurays', function(Blueprint $table) {
+            $table->dropForeign('blurays_series_id_foreign');
+            $table->dropForeign('blurays_rating_id_foreign');
+            $table->dropForeign('blurays_account_id_foreign');
+        });
         
-        Schema::dropIfExists('bluerays');
+        Schema::drop('blurays');
     }
 }

@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'api', 'middleware' => 'cors'], function () {
+Route::group(['prefix' => 'api', /*'middleware' => 'cors'*/], function () {
 
     Route::group(['prefix' => 'info'], function () {
         Route::get('server-time', 'InfoController@serverTime');
@@ -25,7 +25,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'cors'], function () {
     
     
     // Routes that require a token
-    Route::group(['middleware' => ['jwt.auth', 'jwt.refresh']], function () {
+    Route::group(['middleware' => ['jwt.auth', /*'jwt.refresh'*/]], function () {
         Route::get('menu', 'MenuController@menuItems');
         Route::get('user/active', 'UserController@getActiveUser');
 

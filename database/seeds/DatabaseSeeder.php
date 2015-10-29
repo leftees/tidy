@@ -14,11 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        if(env('APP_ENV') !== 'production') {
-            $this->call(UserTableSeeder::class);
-        }
-        
-        // Prod level
+        $this->call(TestAccountsSeeder::class);
         $this->call(RatingsSeeder::class);
 
         Model::reguard();

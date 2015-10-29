@@ -36,7 +36,7 @@ class CreateSeriesTable extends Migration
     {
         if(Schema::hasTable('series')) {
             Schema::table('series', function(Blueprint $table) {
-                $table->dropForeign('accounts_account_id_foreign');
+                $table->dropForeign('series_account_id_foreign');
             });
         }
             

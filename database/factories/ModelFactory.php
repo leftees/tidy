@@ -19,3 +19,12 @@ $factory->define(Tidy\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+
+$factory->define(Tidy\Account::class, function (Faker\Generator $faker) {
+   return [
+       'name' => $faker->text(100),
+       'address' => $faker->address,
+       'description' => $faker->realText(500)
+   ];
+});

@@ -21,8 +21,7 @@ class RatingsSeeder extends Seeder
                 'for_bluray'  => true,
             ],
         ];
-
-        DB::statement('TRUNCATE TABLE ratings');
+        
         foreach ($r as $rating) {
             Rating::create($rating);
         }

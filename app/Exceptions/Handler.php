@@ -4,6 +4,7 @@ namespace Tidy\Exceptions;
 
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Session\TokenMismatchException;
 use Raven_Client;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -68,8 +69,29 @@ class Handler extends ExceptionHandler
         if(!$statusCode) {
             $statusCode = 500;
         }
+
+
+        $message = $e->getMessage();
+        $code = $e->getCode();
         
-        $response = response()->json(['error' => $e->getMessage(), 'code' => $e->getCode()], $statusCode);
+        if($e instanceof TokenMismatchException) {
+            $message = 'CSRF token mismatch';
+        }
+        
+        if(empty($message)) {
+            $message = 'system error: ' . get_class($e); 
+        }
+
+        $responseDetails = ['error' => $message, 'code' => $code];
+        
+        if (env('APP_DEBUG')) {
+            $responseDetails['stacktrace'] = $e->getTraceAsString();
+        }
+        
+        
+        $response = response()->json(
+            $responseDetails, 
+            $statusCode);
 
         if ($request->is('api/*')) {
             app('Asm89\Stack\CorsService')->addActualRequestHeaders($response, $request);

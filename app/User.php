@@ -41,4 +41,11 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->belongsToMany('Tidy\Account');
     }
+
+    /**
+     * @return array
+     */
+    public function getAccountIds() {
+        return $this->accounts()->get()->pluck('id')->toArray();
+    }
 }

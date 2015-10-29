@@ -3,7 +3,6 @@
 namespace Tidy\Http\Requests;
 
 use Tidy\Bluray;
-use Tidy\Http\Requests\Request;
 
 class BlurayRequest extends Request
 {
@@ -17,9 +16,14 @@ class BlurayRequest extends Request
         $bluray = $this->route('bluray');
         $blurayId = $bluray instanceof Bluray ? $bluray->id : $bluray;
 
-        dd($this->user());
+        if (!$blurayId) {
+            return true; // Creates will pass
+        }
 
-        return Bluray::where('id', $blurayId)->where('account_id');
+        $user = $this->user();
+        $accountIds = $user->getAccountIds();
+
+        return Bluray::where('id', $blurayId)->whereIn('account_id', $accountIds);
     }
 
     /**
@@ -30,8 +34,8 @@ class BlurayRequest extends Request
     public function rules()
     {
         return [
-            'title' => 'required|max:500',
-            'description' => 'max:4000'
+            'title'       => 'required|max:500',
+            'description' => 'max:4000',
         ];
     }
 }
