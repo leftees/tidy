@@ -14,7 +14,7 @@ class UserTest extends \Codeception\TestCase\Test
     public function testUserCanBeCreated()
     {
         $attributes = [
-            'email' => 'test@example.com',
+            'email' => 'test55@example.com',
             'name' => 'Test Name',
             'password' => bcrypt('test')
         ];

@@ -19,7 +19,7 @@ modules:
         Laravel5:
             cleanup: true
             environment_file: '.env.testing'
-            disable_middleware: true
+            disable_middleware: false
 coverage:
     enabled: true
     include:
