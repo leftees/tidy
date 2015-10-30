@@ -5,6 +5,10 @@ languages:
   Python: false
  exclude_paths:
    - "tests/*"
+   - "database/*"
+   - "config/*"
+   - "public/*"
+   - "resources/*"
    - "storage/*"
    - "vendor/*"
    - "bootstrap/*"
