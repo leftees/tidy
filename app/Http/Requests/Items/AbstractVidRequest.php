@@ -1,11 +1,14 @@
 <?php
 
-namespace Tidy\Http\Requests;
+namespace Tidy\Http\Requests\Items;
 
-use Tidy\Bluray;
+use Tidy\Http\Requests\Request;
 
-class BlurayRequest extends Request
+class AbstractVidRequest extends Request
 {
+    const ROUTE_KEY = 'unknown';
+    const MODEL = 'unknown';
+    
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,14 +16,14 @@ class BlurayRequest extends Request
      */
     public function authorize()
     {
-        $bluray = $this->route('bluray');
-        $blurayId = $bluray instanceof Bluray ? $bluray->id : $bluray;
+        $model = $this->route(static::ROUTE_KEY);
+        $modelId = $model instanceof AbstractVid ? $model->id : $model;
 
-        if (!$blurayId) {
+        if (!$modelId) {
             return true; // Creates will pass
         }
 
-        return Bluray::where('id', $blurayId)->whereIn('account_id', $this->getUserAccountIds());
+        return forward_static_call([static::MODEL, 'where'], 'id', $modelId)->whereIn('account_id', $this->getUserAccountIds());
     }
 
     /**

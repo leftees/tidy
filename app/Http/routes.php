@@ -30,7 +30,8 @@ Route::group(['prefix' => 'api', /*'middleware' => 'cors'*/], function () {
         Route::get('user/active', 'UserController@getActiveUser');
 
         // Items
-        Route::resource('bluray', 'BlurayController', ['except' => ['create', 'edit']]);
+        Route::resource('bluray', 'Items/BlurayController', ['except' => ['create', 'edit']]);
+        Route::resource('dvd', 'Items/DvdController', ['except' => ['create', 'edit']]);
     });
 
 });
