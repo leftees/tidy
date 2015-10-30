@@ -1,11 +1,11 @@
-# Save as .codeclimate.yml (note leading .) in project root directory
 languages:
   Ruby: false
   JavaScript: false
   PHP: true
   Python: false
  exclude_paths:
- - "tests/*"
- - "storage/*"
- - "vendor/*"
- - "bootstrap/*"
+   - "tests/*"
+   - "storage/*"
+   - "vendor/*"
+   - "bootstrap/*"
+   - "tests/_support/_generated/ApiTesterActions.php"
