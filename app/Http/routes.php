@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'api', /*'middleware' => 'cors'*/], function () {
+Route::group(['prefix' => 'api', 'middleware' => 'cors'], function () {
 
     Route::group(['prefix' => 'info'], function () {
         Route::get('server-time', 'InfoController@serverTime');
