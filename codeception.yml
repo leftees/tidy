@@ -30,3 +30,5 @@ coverage:
         - app/Console/Kernel.php
         - app/Http/routes.php
         - app/Providers/*
+        - tests/*
+        - bootstrap/*
