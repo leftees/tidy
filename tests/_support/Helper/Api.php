@@ -8,20 +8,24 @@ use Tidy\User;
 
 class Api extends \Codeception\Module
 {
+    
+    protected $token;
+
     /**
-     * @param $token
      * @param $method
      * @param $uri
      * @param array $params
      *
      * @return \Symfony\Component\DomCrawler\Crawler
      */
-    public function makeApiCall($token, $method, $uri, array $params) {
-        return $this->laravel5()->client->request($method, $uri, $params, [], [
+    public function makeApiCall($method, $uri, array $params) {
+        $token = $this->getWebToken();
+        
+        $this->laravel5()->_loadPage($method, $uri, $params, [], [
             'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest',
             'HTTP_AUTHORIZATION' => 'Bearer ' . $token,
-            'HTTP_ACCEPT' => 'appliction/json'
-        ], null, true);
+            'HTTP_ACCEPT' => 'application/json'
+        ], null);
     }
     
     public function refreshDb()
@@ -29,8 +33,12 @@ class Api extends \Codeception\Module
         \Artisan::call('migrate:refresh', ['--seed' => true]);
     }
     
-    public function getWebToken()
+    public function getWebToken($fresh = false)
     {
+        if($this->token && !$fresh) {
+            return $this->token;
+        }
+        
         $testUser = [
             'email' => 'test1@example.com',
             'password' => 'qwerty'
@@ -49,6 +57,8 @@ class Api extends \Codeception\Module
 
         $this->assertNotEmpty($token, 'Token was not generated');
 
+        $this->token = $token;
+        
         return $token;
     }
 
@@ -58,10 +68,7 @@ class Api extends \Codeception\Module
      */
     public function laravel5()
     {
-        /** @var \Codeception\Module\Laravel5 $laravel5 */
-        $laravel5 = $this->getModule('Laravel5');
-
-        return $laravel5;
+        return $this->getModule('Laravel5');
     }
 
 }

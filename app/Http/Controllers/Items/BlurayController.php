@@ -68,8 +68,8 @@ class BlurayController extends AbstractVidController
      */
     public function destroy(Bluray $bluray)
     {
-        $this->globalDestroy($bluray);
+        $deleted = $this->globalDestroy($bluray);
 
-        return response()->json(['message' => 'deleted']);
+        return response()->json(compact('deleted'));
     }
 }

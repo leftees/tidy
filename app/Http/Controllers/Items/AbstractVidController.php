@@ -107,9 +107,7 @@ class AbstractVidController extends Controller
     {
         $this->assertModelIsValid($model);
 
-        $model->delete();
-
-        return $model;
+        return $model->delete();
     }
 
     /**

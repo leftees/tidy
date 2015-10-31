@@ -19,7 +19,6 @@ trait ApiTesterActions
     /**
      * [!] Method is generated. Documentation taken from corresponding module.
      *
-     * @param $token
      * @param $method
      * @param $uri
      * @param array $params
@@ -27,7 +26,7 @@ trait ApiTesterActions
      * @return \Symfony\Component\DomCrawler\Crawler
      * @see \Helper\Api::makeApiCall()
      */
-    public function makeApiCall($token, $method, $uri, $params) {
+    public function makeApiCall($method, $uri, $params) {
         return $this->getScenario()->runStep(new \Codeception\Step\Action('makeApiCall', func_get_args()));
     }
 
@@ -49,7 +48,7 @@ trait ApiTesterActions
      *
      * @see \Helper\Api::getWebToken()
      */
-    public function getWebToken() {
+    public function getWebToken($fresh = null) {
         return $this->getScenario()->runStep(new \Codeception\Step\Action('getWebToken', func_get_args()));
     }
 

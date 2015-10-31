@@ -65,8 +65,8 @@ class DvdController extends AbstractVidController
      */
     public function destroy(Dvd $dvd)
     {
-        $this->globalDestroy($dvd);
+        $deleted = $this->globalDestroy($dvd);
 
-        return response()->json(['message' => 'deleted']);
+        return response()->json(compact('deleted'));
     }
 }
