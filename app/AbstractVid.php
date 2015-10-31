@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Rating rating
  * @property Series series
  */
-abstract class AbstractVid extends Model
+class AbstractVid extends Model
 {
     protected $fillable = ['title', 'description', 'series_id', 'rating_id', 'account_id'];
 

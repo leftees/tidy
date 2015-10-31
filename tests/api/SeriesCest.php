@@ -82,5 +82,29 @@ class SeriesCest
         
         $I->laravel5()->dontSeeRecord('series', ['id' => $series->id]);
     }
+
+
+    public function testUpdateSeries(ApiTester $I)
+    {
+        $I->am('a user');
+        $I->wantTo('update a stored series');
+
+        // Populate a series
+        $originalName = 'Toon World';
+        $newName = 'Failed Toon World';
+        
+        $series = \Tidy\Series::create(['title' => $originalName, 'account_id' => 3]);
+        $I->laravel5()->seeRecord('series', ['title' => $originalName]);
+        $I->laravel5()->dontSeeRecord('series', ['title' => $newName]);
+
+        $I->makeApiCall('PUT', '/api/series/' . $series->id, ['title' => $newName, 'account_id' => 3]);
+        
+        $I->laravel5()->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
+
+        $I->laravel5()->seeRecord('series', ['id' => $series->id, 'title' => $newName]);
+        $I->laravel5()->dontSeeRecord('series', ['id' => $series->id, 'title' => $originalName]);
+        
+    }
     
 }

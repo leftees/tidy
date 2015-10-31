@@ -92,7 +92,9 @@ class SeriesController extends Controller
     public function update(Requests\SeriesRequest $request, Series $series)
     {
         $this->assertSeriesIsValid($series);
-        $series->fill($request->all());
+        $series->fill($request->except(['account_id']));
+        
+        $series->save();
         
         return response()->json(compact('series'));
     }
