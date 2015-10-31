@@ -47,6 +47,40 @@ class SeriesCest
         $I->laravel5()->seeResponseCodeIs(422);
         $I->laravel5()->see('The title field is required');
     }
+    
+    public function testShowSeries(ApiTester $I)
+    {
+        $I->wantTo('show a stored series');
+        
+        // Populate a series
+        $series = \Tidy\Series::create(['title' => 'Pegasus Falls', 'account_id' => 3]);
+        
+        $I->makeApiCall('GET', '/api/series/' . $series->id, []);
+        
+        $I->laravel5()->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
+        $I->laravel5()->see('series');
+        $I->laravel5()->see('"id":"1"');
+        
+    }
+        
 
+    public function testDestroySeries(ApiTester $I)
+    {
+        $I->am('a user');
+        $I->wantTo('destroy a stored series');
+
+        // Populate a series
+        $series = \Tidy\Series::create(['title' => 'Pegasus 2 Falls', 'account_id' => 3]);
+        $I->laravel5()->seeRecord('series', ['title' => 'Pegasus 2 Falls']);
+        
+        $I->makeApiCall('DELETE', '/api/series/' . $series->id, []);
+
+        $I->laravel5()->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
+        $I->laravel5()->see('"deleted"');
+        
+        $I->laravel5()->dontSeeRecord('series', ['id' => $series->id]);
+    }
     
 }
