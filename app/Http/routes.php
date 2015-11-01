@@ -33,6 +33,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'cors'], function () {
         Route::resource('bluray', 'Items\BlurayController', ['except' => ['create', 'edit']]);
         Route::resource('dvd', 'Items\DvdController', ['except' => ['create', 'edit']]);
         Route::resource('series', 'SeriesController', ['except' => ['create', 'edit']]);
+        Route::resource('rating', 'RatingsController', ['only' => ['index', 'show']]);
     });
 
 });
