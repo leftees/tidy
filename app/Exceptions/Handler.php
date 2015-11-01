@@ -77,6 +77,9 @@ class Handler extends ExceptionHandler
         if($e instanceof TokenMismatchException) {
             $message = 'CSRF token mismatch';
         }
+        else if($e instanceof NotFoundHttpException) {
+            $message = 'Page Not Found: ' . $request->getRequestUri();
+        }
         
         if(empty($message)) {
             $message = 'system error: ' . get_class($e); 
