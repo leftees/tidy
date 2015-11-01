@@ -36,7 +36,7 @@ class AbstractVidRequest extends Request
         return [
             'title'       => 'required|max:500',
             'description' => 'max:4000',
-            'account_id'  => 'required|integer' // @TODO make sure the account id is limited to the accounts the user belongs to
+            'account_id'  => 'sometimes|integer' // @TODO make sure the account id is limited to the accounts the user belongs to
         ];
     }
 }

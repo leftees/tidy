@@ -91,6 +91,8 @@ class AbstractVidController extends Controller
     protected function globalUpdate(AbstractVidRequest $request, AbstractVid $model)
     {
         $this->assertModelIsValid($model);
+        
+        $model->fill($request->except('account_id'));
 
         $model->save();
 

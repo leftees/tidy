@@ -1,15 +1,17 @@
 <?php
 
+use Step\Api\Auth;
+
 class SeriesCest
 {
-    public function _before(\Step\Api\Auth $I)
+    public function _before(Auth $I)
     {
         $I->refreshDb();
         $I->authenticateUser();
         $I->addTokenToHttpHeader();
     }
 
-    public function testCreateSeries(\Step\Api\Auth $I)
+    public function testCreateSeries(Auth $I)
     {
         $I->wantTo('create a series through the API');
 
@@ -26,7 +28,7 @@ class SeriesCest
         $I->laravel5()->seeRecord('series', $series);
     }
 
-    public function testSeriesValidationFails(ApiTester $I)
+    public function testSeriesValidationFails(Auth $I)
     {
         $I->wantTo('get an error');
         
@@ -42,7 +44,7 @@ class SeriesCest
         $I->seeResponseContainsJson(['title' => ['The title field is required.']]);
     }
     
-    public function testShowSeries(ApiTester $I)
+    public function testShowSeries(Auth $I)
     {
         $I->wantTo('show a stored series');
         
@@ -57,7 +59,7 @@ class SeriesCest
         $I->seeResponseContainsJson($rawSeries);
     }
     
-    public function testDestroySeries(ApiTester $I)
+    public function testDestroySeries(Auth $I)
     {
         $I->wantTo('destroy a stored series');
 
@@ -77,7 +79,7 @@ class SeriesCest
         $I->laravel5()->dontSeeRecord('series', $rawSeries);
     }
 
-    public function testUpdateSeries(ApiTester $I)
+    public function testUpdateSeries(Auth $I)
     {
         $I->wantTo('update a stored series');
 
