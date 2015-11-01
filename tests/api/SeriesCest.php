@@ -4,33 +4,28 @@ class SeriesCest
 {
     protected $token;
 
-    public function _before(ApiTester $I)
+    public function _before(\Step\Api\Auth $I)
     {
         $I->refreshDb();
-        $I->laravel5()->amOnPage('/');
-        $I->getWebToken(true);
+        $I->authenticateUser();
+        $I->addTokenToHttpHeader();
     }
 
-    public function _after(ApiTester $I)
+    public function testCreateSeries(\Step\Api\Auth $I)
     {
-    }
-
-    public function testCreateSeries(ApiTester $I)
-    {
-        $I->am('a user');
         $I->wantTo('create a series through the API');
 
-        $I->makeApiCall(
-            'POST',
-            '/api/series',
-            [
-                'title'      => 'Sample Test',
-                'account_id' => 2,
-            ]
-        );
-
-        $I->laravel5()->seeResponseCodeIs(200);
-        $I->laravel5()->seeRecord('series', ['title' => 'Sample Test']);
+        $series = [
+            'title'      => 'Sample Test',
+            'account_id' => 2,
+        ];
+        $I->sendPOST('series', $series);
+        
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson($series);
+        
+        $I->laravel5()->seeRecord('series', $series);
     }
 
     public function testSeriesValidationFails(ApiTester $I)
@@ -42,10 +37,11 @@ class SeriesCest
             'account_id' => 2,
         ];
 
-        $I->makeApiCall('POST', '/api/series', $badSeries);
+        $I->sendPOST('series', $badSeries);
 
-        $I->laravel5()->seeResponseCodeIs(422);
-        $I->laravel5()->see('The title field is required');
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(422);
+        $I->seeResponseContainsJson(['title' => ['The title field is required.']]);
     }
     
     public function testShowSeries(ApiTester $I)
@@ -53,58 +49,64 @@ class SeriesCest
         $I->wantTo('show a stored series');
         
         // Populate a series
-        $series = \Tidy\Series::create(['title' => 'Pegasus Falls', 'account_id' => 3]);
+        $rawSeries = ['title' => 'Pegasus Falls', 'account_id' => 3];
+        $series = \Tidy\Series::create($rawSeries);
         
-        $I->makeApiCall('GET', '/api/series/' . $series->id, []);
-        
-        $I->laravel5()->seeResponseCodeIs(200);
-        $I->seeResponseIsJson();
-        $I->laravel5()->see('series');
-        $I->laravel5()->see('"id":"1"');
-        
-    }
-        
+        $I->sendGET('series/' . $series->id);
 
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson($rawSeries);
+    }
+    
     public function testDestroySeries(ApiTester $I)
     {
-        $I->am('a user');
         $I->wantTo('destroy a stored series');
 
         // Populate a series
-        $series = \Tidy\Series::create(['title' => 'Pegasus 2 Falls', 'account_id' => 3]);
-        $I->laravel5()->seeRecord('series', ['title' => 'Pegasus 2 Falls']);
+        $rawSeries = ['title' => 'Pegasus 2 Falls', 'account_id' => 3];
+        $series = \Tidy\Series::create($rawSeries);
         
-        $I->makeApiCall('DELETE', '/api/series/' . $series->id, []);
+        $I->laravel5()->seeRecord('series', $rawSeries);
+        
+        $I->sendDELETE('series/' . $series->id);
 
-        $I->laravel5()->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
-        $I->laravel5()->see('"deleted"');
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson(['deleted' => true]);
         
-        $I->laravel5()->dontSeeRecord('series', ['id' => $series->id]);
+        
+        $I->laravel5()->dontSeeRecord('series', $rawSeries);
     }
-
 
     public function testUpdateSeries(ApiTester $I)
     {
-        $I->am('a user');
         $I->wantTo('update a stored series');
 
-        // Populate a series
-        $originalName = 'Toon World';
-        $newName = 'Failed Toon World';
+        $originalSeries = [
+            'title' => 'Toon World',
+            'account_id' => 3
+        ];
         
-        $series = \Tidy\Series::create(['title' => $originalName, 'account_id' => 3]);
-        $I->laravel5()->seeRecord('series', ['title' => $originalName]);
-        $I->laravel5()->dontSeeRecord('series', ['title' => $newName]);
+        $updatedSeries = [
+            'title' => 'Lumos Maxima',
+            'account_id' => 3
+        ];
+        
+        // Create the series first of all
+        $series = \Tidy\Series::create($originalSeries);
+        $I->laravel5()->seeRecord('series', $originalSeries);
+        $I->laravel5()->dontSeeRecord('series', $updatedSeries);
+        
+        // Run the update
+        $I->sendPUT('series/' . $series->id, $updatedSeries);
 
-        $I->makeApiCall('PUT', '/api/series/' . $series->id, ['title' => $newName, 'account_id' => 3]);
-        
-        $I->laravel5()->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson($updatedSeries);
 
-        $I->laravel5()->seeRecord('series', ['id' => $series->id, 'title' => $newName]);
-        $I->laravel5()->dontSeeRecord('series', ['id' => $series->id, 'title' => $originalName]);
-        
+        $I->laravel5()->seeRecord('series', $updatedSeries);
+        $I->laravel5()->dontSeeRecord('series', $originalSeries);
     }
     
 }
