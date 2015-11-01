@@ -2,8 +2,6 @@
 
 class SeriesCest
 {
-    protected $token;
-
     public function _before(\Step\Api\Auth $I)
     {
         $I->refreshDb();

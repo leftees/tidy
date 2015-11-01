@@ -1,33 +1,34 @@
 <?php
-use \ApiTester;
 
 class BlurayCest
 {
-    protected $token;
-
-    public function _before(ApiTester $I)
+    public function _before(\Step\Api\Auth $I)
     {
         $I->refreshDb();
-        $I->laravel5()->amOnPage('/');
-        $I->getWebToken(true);
+        $I->authenticateUser();
+        $I->addTokenToHttpHeader();
     }
 
     public function _after(ApiTester $I)
     {
     }
 
-    public function testCreateBluray(ApiTester $I)
+    public function testCreateBluray(\Step\Api\Auth $I)
     {
-        $I->am('a user');
         $I->wantTo('create a bluray through the API');
 
-        $I->makeApiCall('POST', '/api/bluray', [
-            'title' => 'Test Bluray',
+        $bluray = [
+            'title'       => 'Test Bluray',
             'description' => 'Description',
-            'account_id' => 2
-        ]);
+            'account_id'  => 2,
+        ];
+        
+        $I->sendPOST('bluray', $bluray);
 
-        $I->laravel5()->seeResponseCodeIs(200);
-        $I->laravel5()->seeRecord('blurays', ['title' => 'Test Bluray']);
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson($bluray);
+
+        $I->laravel5()->seeRecord('blurays', $bluray);
     }
 }
