@@ -53,9 +53,9 @@ class AbstractVidController extends Controller
 
         $count = $itemsCollection->count();
         $perPage = static::PER_PAGE;
-        $currentPage = $request->get('page', 1);
+        $currentPage = $request->get('page', 0);
 
-        $blurays = $itemsCollection->forPage($currentPage, static::PER_PAGE);
+        $blurays = $itemsCollection->forPage($currentPage, static::PER_PAGE)->get();
 
         return response()->json(compact('blurays', 'count', 'perPage', 'currentPage'));
     }

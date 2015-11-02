@@ -1,6 +1,7 @@
 <?php
 
 use Step\Api\Auth;
+use Tidy\Bluray;
 
 class BlurayCest
 {
@@ -50,7 +51,7 @@ class BlurayCest
         ];
 
         // Create the series first of all
-        $bluray = \Tidy\Bluray::create($original);
+        $bluray = Bluray::create($original);
         $I->laravel5()->seeRecord('blurays', $original);
         $I->laravel5()->dontSeeRecord('blurays', $updated);
 
@@ -63,5 +64,62 @@ class BlurayCest
 
         $I->laravel5()->seeRecord('blurays', $updated);
         $I->laravel5()->dontSeeRecord('blurays', $original);
+    }
+    
+    public function testDestroyBluray(Auth $I)
+    {
+        $I->wantTo('destroy a stored bluray');
+        
+        $original = [
+            'title' => 'Dead Man\'s Chest',
+            'description' => 'Oh yeah',
+            'account_id' => 2
+        ];
+        
+        $bluray = Bluray::create($original);
+        $I->laravel5()->seeRecord('blurays', $original);
+        
+        // Call the delete
+        $I->sendDELETE('bluray/' . $bluray->id);
+        
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseIsJson();
+        $I->seeResponseContainsJson(['deleted' => true]);
+
+        $I->laravel5()->dontSeeRecord('blurays', $original);
+    }
+    
+    public function testListBlurays(Auth $I)
+    {
+        $I->wantTo('Load a list of blurays');
+        
+        // Add two of our items
+        $bluray1 = ['title' => 'BR 1', 'account_id' => 3];
+        $bluray2 = ['title' => 'BR 2', 'account_id' => 3];
+        
+        Bluray::create($bluray1);
+        Bluray::create($bluray2);
+        
+        $I->sendGET('bluray', []);
+        
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson(['count' => 2]);
+        $I->seeResponseContainsJson($bluray1);
+        $I->seeResponseContainsJson($bluray2);
+    }
+    
+    public function testShowBluray(Auth $I)
+    {
+        $I->wantTo('Load a single bluray');
+
+        $raw = ['title' => 'Bluray Name', 'account_id' => 3];
+        $bluray = Bluray::create($raw);
+        
+        $I->sendGET('bluray/' . $bluray->id);
+
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson($raw);
     }
 }
